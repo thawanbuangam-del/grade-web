@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ระบบจัดอันดับเกรด</title>
+    <title>Gacha Rank System</title>
     <meta charset="UTF-8">
     <style>
         body {
             font-family: Arial;
             text-align: center;
-            margin-top: 120px;
-            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            margin-top: 80px;
+            transition: 0.5s;
+            background: black;
+            color: white;
+            overflow: hidden;
+        }
+
+        img {
+            width: 200px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px white;
         }
 
         input {
@@ -25,38 +35,65 @@
 
         #result {
             margin-top: 40px;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: bold;
             transition: 0.3s;
         }
 
-        .animate {
-            transform: scale(1.2);
+        .SSR { color: gold; text-shadow: 0 0 25px orange; }
+        .SR  { color: violet; }
+        .MR  { color: cyan; }
+        .R   { color: lime; }
+        .UR  { color: red; }
+
+        .flash {
+            animation: flashEffect 0.5s ease;
         }
 
-        .SSR { color: gold; text-shadow: 0 0 15px orange; }
-        .SR  { color: purple; }
-        .MR  { color: blue; }
-        .R   { color: green; }
-        .UR  { color: red; }
+        @keyframes flashEffect {
+            0% { background: white; }
+            100% { background: black; }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
 
-    <h1>ระบบตรวจเกรดเฉลี่ย (Gacha Rank)</h1>
+    <img src="me.png" alt="profile">
+
+    <h1>ระบบตรวจเกรดเฉลี่ย</h1>
 
     <p>ใส่เกรดเฉลี่ย (0.00 - 4.00)</p>
-    <input type="number" id="score" step="0.01" placeholder="เช่น 3.50">
+    <input type="number" id="score" step="0.01">
     <br><br>
     <button onclick="checkGrade()">ตรวจสอบ</button>
 
     <div id="result"></div>
+
+    <!-- เสียง -->
+    <audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+    <audio id="loseSound" src="https://www.soundjay.com/misc/sounds/fail-buzzer-02.mp3"></audio>
 
     <script>
         function checkGrade() {
             let score = parseFloat(document.getElementById("score").value);
             let resultText = "";
             let rankClass = "";
+            let resultDiv = document.getElementById("result");
+
+            document.body.classList.remove("flash", "shake");
+            resultDiv.className = "";
 
             if (isNaN(score)) {
                 resultText = "กรุณาใส่ตัวเลขให้ถูกต้อง";
@@ -67,31 +104,33 @@
             else if (score >= 3.80) {
                 resultText = "ระดับโคตรจะตึงไม่ใช่เกรดนะหน้ามึงอะ (SSR)";
                 rankClass = "SSR";
+                document.body.classList.add("flash");
+                document.getElementById("winSound").play();
             }
             else if (score >= 3.50) {
                 resultText = "ระดับโคตรจะเฟี้ยวแต่เสี่ยวไปหน่อย (SR)";
                 rankClass = "SR";
+                document.getElementById("winSound").play();
             }
             else if (score >= 3.30) {
                 resultText = "ระดับปานกลางไม่มีไรหรอก (MR)";
                 rankClass = "MR";
+                document.getElementById("winSound").play();
             }
             else if (score >= 3.00) {
                 resultText = "ระดับนี้ควรไปปะแป้งนอนแล้วดื่มโอวันตินสมาร์ช (R)";
                 rankClass = "R";
+                document.getElementById("loseSound").play();
             }
             else {
                 resultText = "เหนือฟ้ายังมีฟ้าเหนือใต้หล่ายังมีพวกมึง (Under R)";
                 rankClass = "UR";
+                document.body.classList.add("shake");
+                document.getElementById("loseSound").play();
             }
 
-            let resultDiv = document.getElementById("result");
-            resultDiv.className = rankClass + " animate";
+            resultDiv.className = rankClass;
             resultDiv.innerHTML = resultText;
-
-            setTimeout(() => {
-                resultDiv.classList.remove("animate");
-            }, 300);
         }
     </script>
 

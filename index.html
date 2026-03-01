@@ -8,7 +8,8 @@
             font-family: Arial;
             text-align: center;
             margin-top: 120px;
-            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            transition: 0.5s;
+            background: #74ebd5;
         }
 
         input {
@@ -25,7 +26,7 @@
 
         #result {
             margin-top: 40px;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: bold;
             transition: 0.3s;
         }
@@ -34,11 +35,21 @@
             transform: scale(1.2);
         }
 
-        .SSR { color: gold; text-shadow: 0 0 15px orange; }
+        .SSR { color: gold; text-shadow: 0 0 20px orange; }
         .SR  { color: purple; }
         .MR  { color: blue; }
         .R   { color: green; }
         .UR  { color: red; }
+
+        /* เอฟเฟกต์แฟลช */
+        .flash {
+            animation: flashEffect 0.5s ease;
+        }
+
+        @keyframes flashEffect {
+            0% { background: white; }
+            100% { background: inherit; }
+        }
     </style>
 </head>
 <body>
@@ -57,6 +68,7 @@
             let score = parseFloat(document.getElementById("score").value);
             let resultText = "";
             let rankClass = "";
+            let bgColor = "#74ebd5";
 
             if (isNaN(score)) {
                 resultText = "กรุณาใส่ตัวเลขให้ถูกต้อง";
@@ -67,23 +79,32 @@
             else if (score >= 3.80) {
                 resultText = "ระดับโคตรจะตึงไม่ใช่เกรดนะหน้ามึงอะ (SSR)";
                 rankClass = "SSR";
+                bgColor = "black";
+                document.body.classList.add("flash");
+                setTimeout(()=> document.body.classList.remove("flash"), 500);
             }
             else if (score >= 3.50) {
                 resultText = "ระดับโคตรจะเฟี้ยวแต่เสี่ยวไปหน่อย (SR)";
                 rankClass = "SR";
+                bgColor = "#d8b4f8";
             }
             else if (score >= 3.30) {
                 resultText = "ระดับปานกลางไม่มีไรหรอก (MR)";
                 rankClass = "MR";
+                bgColor = "#93c5fd";
             }
             else if (score >= 3.00) {
                 resultText = "ระดับนี้ควรไปปะแป้งนอนแล้วดื่มโอวันตินสมาร์ช (R)";
                 rankClass = "R";
+                bgColor = "#86efac";
             }
             else {
                 resultText = "เหนือฟ้ายังมีฟ้าเหนือใต้หล่ายังมีพวกมึง (Under R)";
                 rankClass = "UR";
+                bgColor = "#fca5a5";
             }
+
+            document.body.style.background = bgColor;
 
             let resultDiv = document.getElementById("result");
             resultDiv.className = rankClass + " animate";

@@ -1,10 +1,99 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Grade Web</title>
+    <title>ระบบจัดอันดับเกรด</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 120px;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 150px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 40px;
+            font-size: 26px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .animate {
+            transform: scale(1.2);
+        }
+
+        .SSR { color: gold; text-shadow: 0 0 15px orange; }
+        .SR  { color: purple; }
+        .MR  { color: blue; }
+        .R   { color: green; }
+        .UR  { color: red; }
+    </style>
 </head>
 <body>
-    <h1>เว็บคำนวณเกรด</h1>
-    <p>ยินดีต้อนรับ</p>
+
+    <h1>ระบบตรวจเกรดเฉลี่ย (Gacha Rank)</h1>
+
+    <p>ใส่เกรดเฉลี่ย (0.00 - 4.00)</p>
+    <input type="number" id="score" step="0.01" placeholder="เช่น 3.50">
+    <br><br>
+    <button onclick="checkGrade()">ตรวจสอบ</button>
+
+    <div id="result"></div>
+
+    <script>
+        function checkGrade() {
+            let score = parseFloat(document.getElementById("score").value);
+            let resultText = "";
+            let rankClass = "";
+
+            if (isNaN(score)) {
+                resultText = "กรุณาใส่ตัวเลขให้ถูกต้อง";
+            }
+            else if (score < 0 || score > 4) {
+                resultText = "กรุณาใส่เกรดเฉลี่ยระหว่าง 0.00 - 4.00";
+            }
+            else if (score >= 3.80) {
+                resultText = "ระดับโคตรจะตึงไม่ใช่เกรดนะหน้ามึงอะ (SSR)";
+                rankClass = "SSR";
+            }
+            else if (score >= 3.50) {
+                resultText = "ระดับโคตรจะเฟี้ยวแต่เสี่ยวไปหน่อย (SR)";
+                rankClass = "SR";
+            }
+            else if (score >= 3.30) {
+                resultText = "ระดับปานกลางไม่มีไรหรอก (MR)";
+                rankClass = "MR";
+            }
+            else if (score >= 3.00) {
+                resultText = "ระดับนี้ควรไปปะแป้งนอนแล้วดื่มโอวันตินสมาร์ช (R)";
+                rankClass = "R";
+            }
+            else {
+                resultText = "เหนือฟ้ายังมีฟ้าเหนือใต้หล่ายังมีพวกมึง (Under R)";
+                rankClass = "UR";
+            }
+
+            let resultDiv = document.getElementById("result");
+            resultDiv.className = rankClass + " animate";
+            resultDiv.innerHTML = resultText;
+
+            setTimeout(() => {
+                resultDiv.classList.remove("animate");
+            }, 300);
+        }
+    </script>
+
 </body>
 </html>

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gacha Rank System</title>
     <meta charset="UTF-8">
+    <title>Gacha Rank System</title>
+
     <style>
         body {
             font-family: Arial;
             text-align: center;
             margin-top: 80px;
-            transition: 0.5s;
             background: black;
             color: white;
-            overflow: hidden;
+            transition: 0.5s;
         }
 
         img {
@@ -37,7 +37,6 @@
             margin-top: 40px;
             font-size: 28px;
             font-weight: bold;
-            transition: 0.3s;
         }
 
         .SSR { color: gold; text-shadow: 0 0 25px orange; }
@@ -56,20 +55,21 @@
         }
 
         .shake {
-            animation: shake 0.5s;
+            animation: shake 0.4s;
         }
 
         @keyframes shake {
             0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
             100% { transform: translateX(0); }
         }
     </style>
 </head>
 <body>
 
+    <!-- เปลี่ยนชื่อไฟล์รูปให้ตรงกับที่อัปโหลด -->
     <img src="me.png" alt="profile">
 
     <h1>ระบบตรวจเกรดเฉลี่ย</h1>
@@ -77,23 +77,21 @@
     <p>ใส่เกรดเฉลี่ย (0.00 - 4.00)</p>
     <input type="number" id="score" step="0.01">
     <br><br>
-    <button onclick="check tier Grade()">ตรวจสอบ</button>
+    <button onclick="checkGrade()">ตรวจสอบ</button>
 
     <div id="result"></div>
 
-    <!-- เสียง -->
     <audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
     <audio id="loseSound" src="https://www.soundjay.com/misc/sounds/fail-buzzer-02.mp3"></audio>
 
     <script>
         function checkGrade() {
+
             let score = parseFloat(document.getElementById("score").value);
             let resultText = "";
             let rankClass = "";
-            let resultDiv = document.getElementById("result");
 
             document.body.classList.remove("flash", "shake");
-            resultDiv.className = "";
 
             if (isNaN(score)) {
                 resultText = "กรุณาใส่ตัวเลขให้ถูกต้อง";
@@ -129,31 +127,9 @@
                 document.getElementById("loseSound").play();
             }
 
+            let resultDiv = document.getElementById("result");
             resultDiv.className = rankClass;
             resultDiv.innerHTML = resultText;
-        }
-    </script>
-
-</body>
-</html>                resultText = "ระดับปานกลางไม่มีไรหรอก (MR)";
-                rankClass = "MR";
-            }
-            else if (score >= 3.00) {
-                resultText = "ระดับนี้ควรไปปะแป้งนอนแล้วดื่มโอวันตินสมาร์ช (R)";
-                rankClass = "R";
-            }
-            else {
-                resultText = "เหนือฟ้ายังมีฟ้าเหนือใต้หล่ายังมีพวกมึง (Under R)";
-                rankClass = "UR";
-            }
-
-            let resultDiv = document.getElementById("result");
-            resultDiv.className = rankClass + " animate";
-            resultDiv.innerHTML = resultText;
-
-            setTimeout(() => {
-                resultDiv.classList.remove("animate");
-            }, 300);
         }
     </script>
 
